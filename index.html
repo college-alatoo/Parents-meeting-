@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Обходной лист — Родительское собрание 20.11.2026</title>
+    <link rel="icon" type="image/png" href="aiu-logo.png">
+    <link rel="apple-touch-icon" href="aiu-logo.png">
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение шрифта Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef1fb',
+                            100: '#dce3f7',
+                            500: '#243b82',
+                            600: '#172963',
+                            700: '#122052',
+                            900: '#0b1745',
+                        },
+                        accent: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#d51f35',
+                            600: '#c7192e',
+                            700: '#a91225',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f1f5f9;
+        }
+        .check-card {
+            transition: transform 0.16s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .check-card:active {
+            transform: scale(0.985);
+        }
+    </style>
+</head>
+<body class="text-slate-900 antialiased min-h-screen flex flex-col justify-between pb-36">
+
+    <!-- Всплывающее уведомление (Toast) -->
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300 transform -translate-y-4 opacity-0 w-[92%] max-w-md pointer-events-none">
+        <div class="bg-slate-900/95 backdrop-blur-md text-white px-4 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold border border-slate-700/80">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span id="toast-message" class="leading-snug">Сообщение</span>
+        </div>
+    </div>
+
+    <!-- Главный контейнер -->
+    <div class="w-full max-w-lg mx-auto px-4 pt-4">
+        
+        <!-- 1. Компактная, понятная шапка -->
+        <header class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/90 mb-3">
+            <div class="flex items-start justify-between gap-3 mb-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <img src="aiu-logo.png" alt="Официальный логотип Ala-Too International University" class="w-16 h-16 sm:w-[76px] sm:h-[76px] object-contain shrink-0" />
+                    <div class="min-w-0">
+                        <p class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-brand-600 mb-1">
+                            Ala-Too International University
+                        </p>
+                        <p class="text-xs sm:text-sm font-extrabold text-slate-700 mb-1">IT & Business College • Блок C</p>
+                        <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+                            Родительское собрание
+                        </h1>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-500 mt-0.5">20 ноября 2026</p>
+                    </div>
+                </div>
+                <div class="shrink-0 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-2xl text-right">
+                    <span class="block text-[11px] font-bold text-emerald-700">Посещено:</span>
+                    <span class="text-base font-extrabold text-emerald-700"><span id="visited-count">0</span> <span class="text-xs font-semibold">каб.</span></span>
+                </div>
+            </div>
+
+            <!-- Простой выбор группы ребёнка -->
+            <div>
+                <label for="group-select" class="block text-sm font-bold text-slate-700 mb-1.5">
+                    Выберите группу ребёнка (необязательно)
+                </label>
+                <div class="relative">
+                    <select id="group-select" class="w-full appearance-none bg-slate-50 border-2 border-slate-200 hover:border-brand-400 focus:border-brand-600 focus:bg-white rounded-2xl px-4 py-3.5 pr-10 text-base font-bold text-slate-900 outline-none transition cursor-pointer">
+                        <option value="">Все группы (12 групп)</option>
+                        <!-- Заполняется через JS -->
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. Всегда видимый быстрый переключатель-навигатор 16:00 | 17:00 -->
+        <nav aria-label="Навигация по времени" class="sticky top-2 z-30 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-md border border-slate-200/90 mb-5 grid grid-cols-2 gap-1.5">
+            <a href="#stage-1600" id="nav-1600" class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-brand-600 text-white shadow-sm">
+                <span>🕒 16:00</span>
+                <span class="font-semibold text-xs sm:text-sm opacity-95">Фуршет и учителя</span>
+            </a>
+            <a href="#stage-1700" id="nav-1700" class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-slate-100 text-slate-800 hover:bg-slate-200">
+                <span>🕔 17:00</span>
+                <span class="font-semibold text-xs sm:text-sm">Кураторы</span>
+            </a>
+        </nav>
+
+        <!-- 3. Основной контейнер с двумя крупными этапами: 16:00 и 17:00 -->
+        <main id="schedule-container" class="space-y-8">
+            <!-- Рендерится динамически через JavaScript -->
+        </main>
+
+        <!-- Подвал -->
+        <footer class="mt-8 pt-4 text-center text-xs text-slate-400">
+            <p class="font-semibold text-slate-500">IT & Business College • МУ «Ала-Тоо» • Блок C</p>
+            <p class="mt-0.5">Все галочки автоматически сохраняются в вашем телефоне</p>
+        </footer>
+    </div>
+
+    <!-- 4. Максимально простой низ экрана (sticky bottom bar) -->
+    <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 pt-2.5 pb-3 shadow-[0_-4px_20px_rgba(15,23,42,0.06)]">
+        <div class="max-w-lg mx-auto space-y-2">
+            <!-- Строка быстрого поиска -->
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <input type="text" id="search-input" placeholder="Найти учителя, предмет или кабинет..." 
+                    class="w-full pl-9 pr-9 py-2.5 rounded-xl bg-slate-100 border border-slate-200/80 text-sm font-medium text-slate-900 placeholder-slate-500 focus:bg-white focus:border-brand-500 outline-none transition">
+                <button type="button" id="clear-search-btn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700" aria-label="Очистить поиск">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Одна понятная зелёная кнопка отчёта и небольшая кнопка сброса -->
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="openReportModal()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Отправить отчёт куратору</span>
+                    <span id="bottom-badge-count" class="bg-white/25 text-white text-xs font-extrabold px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button type="button" onclick="openResetModal()" class="px-3.5 py-3.5 rounded-2xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 text-xs font-bold transition shrink-0" title="Сбросить галочки">
+                    Сбросить галочки
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Отчёт куратору + WhatsApp -->
+    <div id="report-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[88vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+                <div>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">Отчёт о посещении</h3>
+                    <p class="text-xs sm:text-sm text-slate-500">20 ноября 2026 • IT & Business College</p>
+                </div>
+                <button type="button" onclick="closeReportModal()" class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Сводка отмеченных кабинетов -->
+            <div id="report-body" class="py-4 overflow-y-auto space-y-3 flex-1">
+                <!-- Контент генерируется в JS -->
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="pt-3 border-t border-slate-100 flex flex-col gap-2 shrink-0">
+                <a id="whatsapp-share-link" href="#" target="_blank" rel="noopener noreferrer" onclick="copyReportSilently()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition">
+                    <span>Открыть WhatsApp и отправить</span>
+                </a>
+                <div class="flex gap-2">
+                    <button type="button" onclick="copyReportToClipboard()" class="flex-1 py-3 px-4 rounded-2xl bg-brand-50 text-brand-700 font-bold text-xs sm:text-sm hover:bg-brand-100 transition">
+                        Скопировать текст
+                    </button>
+                    <button type="button" onclick="closeReportModal()" class="py-3 px-5 rounded-2xl bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-200 transition">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения сброса -->
+    <div id="reset-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center">
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">Сбросить все галочки?</h3>
+            <p class="text-sm text-slate-500 mb-5 leading-relaxed">Все отметки о посещении кабинетов будут очищены. Выбранная группа сохранится.</p>
+            
+            <div class="flex flex-col gap-2">
+                <button type="button" onclick="confirmResetChecks()" class="w-full py-3.5 px-4 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm transition">
+                    Да, сбросить галочки
+                </button>
+                <button type="button" onclick="closeResetModal()" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Ключ сохранения в localStorage
+         */
+        const STORAGE_KEY = 'itbc_parent_meeting_20_11_2026_simple_v3';
+
+        /**
+         * Полные данные расписания по двум временным этапам: 16:00 и 17:00
+         */
+        const SCHEDULE_ITEMS = [
+            // ЭТАП 16:00 — Фуршет и встреча с преподавателями
+            {
+                id: 'buffet-1600',
+                stage: '16:00',
+                isBuffet: true,
+                title: 'Фуршет для родителей',
+                subtitle: 'Приветственный фуршет перед началом встреч с преподавателями',
+                room: 'Блок C',
+                floor: '2 этаж',
+                group: null
+            },
+            {
+                id: 'teach-302',
+                stage: '16:00',
+                title: 'English',
+                subtitle: 'Айдана Абылова, Жайгул Сейталиева, Жылдыз Индигаарева',
+                room: 'Каб. 302',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-303',
+                stage: '16:00',
+                title: 'English',
+                subtitle: 'Дастан Сатыбаев, Айзада Омуркулова, Нурзат Усупова',
+                room: 'Каб. 303',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-304',
+                stage: '16:00',
+                title: 'English',
+                subtitle: 'Хадижа Хажжаж, Канышай Мурзалимбекова',
+                room: 'Каб. 304',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-305',
+                stage: '16:00',
+                title: 'География и Физика',
+                subtitle: 'Эмилбек Жолдошбеков, Эльдар Жоробеков',
+                room: 'Каб. 305',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-306',
+                stage: '16:00',
+                title: 'Введение в специальность (Экономика)',
+                subtitle: 'Салтанат Деркенбаева, Кубанычбек к. Феруза',
+                room: 'Каб. 306',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-307',
+                stage: '16:00',
+                title: 'Введение в специальность (Экономика)',
+                subtitle: 'Нуржан Назакулова',
+                room: 'Каб. 307',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-lab103',
+                stage: '16:00',
+                title: 'Введение в специальность (Технический отдел)',
+                subtitle: 'Наргиза Кутманова, Талант Арыстанов',
+                room: 'Lab 103',
+                floor: '1 этаж',
+                group: null
+            },
+            {
+                id: 'teach-lab205',
+                stage: '16:00',
+                title: 'Математика',
+                subtitle: 'Досбол Алиев, Эрбол Болушов',
+                room: 'Lab 205',
+                floor: '2 этаж',
+                group: null
+            },
+            {
+                id: 'teach-201',
+                stage: '16:00',
+                title: 'Математика',
+                subtitle: 'Азизбек, Акылай',
+                room: 'Каб. 201',
+                floor: '2 этаж',
+                group: null
+            },
+            {
+                id: 'teach-308',
+                stage: '16:00',
+                title: 'Кыргыз тил и Русский язык',
+                subtitle: 'Айзада Турдакун к., Айнура Дыйканбаева, Айжамал Иманкулова',
+                room: 'Каб. 308',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-309',
+                stage: '16:00',
+                title: 'Химия',
+                subtitle: 'Нурлан Маннап уулу, Нурзада Эргешова',
+                room: 'Каб. 309',
+                floor: '3 этаж',
+                group: null
+            },
+            {
+                id: 'teach-lab204',
+                stage: '16:00',
+                title: 'International Relations Office',
+                subtitle: 'Айгерим Максымбекова',
+                room: 'Lab 204',
+                floor: '2 этаж',
+                group: null
+            },
+
+            // ЭТАП 17:00 — Встреча с куратором группы (12 групп)
+            {
+                id: 'cur-ACO-26',
+                stage: '17:00',
+                title: 'ACO-26',
+                subtitle: 'Куратор: Nurzhan Nazarkulova',
+                curator: 'Nurzhan Nazarkulova',
+                room: 'Каб. 301',
+                floor: '3 этаж',
+                group: 'ACO-26'
+            },
+            {
+                id: 'cur-CFL-26',
+                stage: '17:00',
+                title: 'CFL-26',
+                subtitle: 'Куратор: Salia Kurmanova',
+                curator: 'Salia Kurmanova',
+                room: 'Каб. 102',
+                floor: '1 этаж',
+                group: 'CFL-26'
+            },
+            {
+                id: 'cur-CMN-26',
+                stage: '17:00',
+                title: 'CMN-26',
+                subtitle: 'Куратор: Nurlanbek Mannap uulu',
+                curator: 'Nurlanbek Mannap uulu',
+                room: 'Каб. 104',
+                floor: '1 этаж',
+                group: 'CMN-26'
+            },
+            {
+                id: 'cur-CSC-26',
+                stage: '17:00',
+                title: 'CSC-26',
+                subtitle: 'Куратор: Erbol Bolushev',
+                curator: 'Erbol Bolushev',
+                room: 'Каб. 106',
+                floor: '1 этаж',
+                group: 'CSC-26'
+            },
+            {
+                id: 'cur-DES-26A',
+                stage: '17:00',
+                title: 'DES-26A',
+                subtitle: 'Куратор: Aigerim Akusheva',
+                curator: 'Aigerim Akusheva',
+                room: 'Каб. 203',
+                floor: '2 этаж',
+                group: 'DES-26A'
+            },
+            {
+                id: 'cur-DES-26B',
+                stage: '17:00',
+                title: 'DES-26B',
+                subtitle: 'Куратор: Aidana Abylova',
+                curator: 'Aidana Abylova',
+                room: 'Каб. 206',
+                floor: '2 этаж',
+                group: 'DES-26B'
+            },
+            {
+                id: 'cur-FLET-26',
+                stage: '17:00',
+                title: 'FLET-26',
+                subtitle: 'Куратор: Aizada Mambetsadykova',
+                curator: 'Aizada Mambetsadykova',
+                room: 'Каб. 208',
+                floor: '2 этаж',
+                group: 'FLET-26'
+            },
+            {
+                id: 'cur-MAR-26A',
+                stage: '17:00',
+                title: 'MAR-26A',
+                subtitle: 'Куратор: Murat Dzhaparov',
+                curator: 'Murat Dzhaparov',
+                room: 'Каб. 209',
+                floor: '2 этаж',
+                group: 'MAR-26A'
+            },
+            {
+                id: 'cur-MAR-26B',
+                stage: '17:00',
+                title: 'MAR-26B',
+                subtitle: 'Куратор: Salidat Isaeva',
+                curator: 'Salidat Isaeva',
+                room: 'Каб. 107',
+                floor: '1 этаж',
+                group: 'MAR-26B'
+            },
+            {
+                id: 'cur-SCA-26A',
+                stage: '17:00',
+                title: 'SCA-26A',
+                subtitle: 'Куратор: Dosbol Aliev',
+                curator: 'Dosbol Aliev',
+                room: 'Каб. 108',
+                floor: '1 этаж',
+                group: 'SCA-26A'
+            },
+            {
+                id: 'cur-SCA-26B',
+                stage: '17:00',
+                title: 'SCA-26B',
+                subtitle: 'Куратор: Azizbek Karimov',
+                curator: 'Azizbek Karimov',
+                room: 'Каб. 202',
+                floor: '2 этаж',
+                group: 'SCA-26B'
+            },
+            {
+                id: 'cur-SCA-26C',
+                stage: '17:00',
+                title: 'SCA-26C',
+                subtitle: 'Куратор: Talant Arystanov',
+                curator: 'Talant Arystanov',
+                room: 'Каб. 101',
+                floor: '1 этаж',
+                group: 'SCA-26C'
+            }
+        ];
+
+        /**
+         * Состояние приложения
+         */
+        let state = {
+            selectedGroup: '',
+            visited: {}, // { [itemId]: 'ЧЧ:ММ' }
+            showAllCurators: false
+        };
+
+        let searchQuery = '';
+        let toastTimer = null;
+
+        /**
+         * Инициализация при загрузке
+         */
+        window.onload = function () {
+            loadState();
+            populateGroupDropdown();
+            bindEvents();
+            renderAll();
+        };
+
+        /**
+         * Загрузка данных из localStorage
+         */
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === 'object') {
+                        state.selectedGroup = parsed.selectedGroup || '';
+                        state.visited = parsed.visited && typeof parsed.visited === 'object' ? parsed.visited : {};
+                    }
+                }
+            } catch (err) {
+                console.error('Ошибка чтения памяти:', err);
+            }
+        }
+
+        /**
+         * Сохранение данных в localStorage
+         */
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    selectedGroup: state.selectedGroup,
+                    visited: state.visited
+                }));
+            } catch (err) {
+                console.error('Ошибка сохранения:', err);
+            }
+        }
+
+        /**
+         * Заполнение выпадающего списка групп
+         */
+        function populateGroupDropdown() {
+            const select = document.getElementById('group-select');
+            const curatorItems = SCHEDULE_ITEMS.filter(item => item.stage === '17:00');
+
+            curatorItems.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.group;
+                option.textContent = `${item.group} — ${item.room} (${item.curator})`;
+                select.appendChild(option);
+            });
+
+            select.value = state.selectedGroup;
+        }
+
+        /**
+         * Привязка обработчиков событий
+         */
+        function bindEvents() {
+            // Выбор группы
+            document.getElementById('group-select').addEventListener('change', (e) => {
+                state.selectedGroup = e.target.value;
+                state.showAllCurators = false;
+                saveState();
+                renderAll();
+
+                if (state.selectedGroup) {
+                    const cur = SCHEDULE_ITEMS.find(i => i.stage === '17:00' && i.group === state.selectedGroup);
+                    if (cur) {
+                        showToast(`Выбрана группа ${cur.group} • В 17:00 подойдите в ${cur.room}`);
+                    }
+                }
+            });
+
+            // Живой поиск
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                if (searchQuery.length > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+                renderAll();
+            });
+
+            // Подсветка активной вкладки 16:00 / 17:00 при прокрутке
+            window.addEventListener('scroll', highlightActiveNavTab, { passive: true });
+        }
+
+        /**
+         * Подсветка активной пилюли времени при прокрутке
+         */
+        function highlightActiveNavTab() {
+            const stage1700 = document.getElementById('stage-1700');
+            const nav1600 = document.getElementById('nav-1600');
+            const nav1700 = document.getElementById('nav-1700');
+            if (!stage1700 || !nav1600 || !nav1700) return;
+
+            const rect = stage1700.getBoundingClientRect();
+            if (rect.top <= 160) {
+                nav1700.className = 'flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-brand-600 text-white shadow-sm';
+                nav1600.className = 'flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-slate-100 text-slate-800 hover:bg-slate-200';
+            } else {
+                nav1600.className = 'flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-brand-600 text-white shadow-sm';
+                nav1700.className = 'flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-slate-100 text-slate-800 hover:bg-slate-200';
+            }
+        }
+
+        /**
+         * Очистка поиска
+         */
+        function clearSearch() {
+            const searchInput = document.getElementById('search-input');
+            searchInput.value = '';
+            searchQuery = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderAll();
+        }
+
+        /**
+         * Раскрытие/сворачивание остальных 11 групп
+         */
+        function toggleShowAllCurators() {
+            state.showAllCurators = !state.showAllCurators;
+            renderAll();
+        }
+
+        /**
+         * Текущее время ЧЧ:ММ
+         */
+        function getFormattedTime() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+
+        /**
+         * Переключение галочки
+         */
+        function toggleItemCheck(itemId) {
+            const item = SCHEDULE_ITEMS.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (state.visited[itemId]) {
+                delete state.visited[itemId];
+                showToast(`Галочка снята: ${item.title}`);
+            } else {
+                const timeStr = getFormattedTime();
+                state.visited[itemId] = timeStr;
+                showToast(`✓ Отмечено (${timeStr}): ${item.title} — ${item.room}`);
+            }
+
+            saveState();
+            renderAll();
+        }
+
+        /**
+         * Проверка совпадения с поиском
+         */
+        function matchesSearch(item) {
+            if (!searchQuery) return true;
+            const haystack = `${item.title} ${item.subtitle} ${item.room} ${item.floor} ${item.group || ''}`.toLowerCase();
+            return haystack.includes(searchQuery);
+        }
+
+        /**
+         * Полная перерисовка экрана
+         */
+        function renderAll() {
+            const totalVisited = Object.keys(state.visited).length;
+            document.getElementById('visited-count').textContent = totalVisited;
+            document.getElementById('bottom-badge-count').textContent = totalVisited;
+
+            const container = document.getElementById('schedule-container');
+            container.innerHTML = '';
+
+            let renderedCount = 0;
+
+            // ============================================================
+            // БЛОК 1: 16:00 — Фуршет и встреча с преподавателями
+            // ============================================================
+            const items1600 = SCHEDULE_ITEMS.filter(i => i.stage === '16:00' && matchesSearch(i));
+            if (items1600.length > 0) {
+                renderedCount += items1600.length;
+                const sec1600 = document.createElement('section');
+                sec1600.id = 'stage-1600';
+                sec1600.className = 'scroll-mt-20';
+
+                sec1600.innerHTML = `
+                    <div class="mb-3.5 px-1">
+                        <div class="inline-flex items-center gap-2 bg-brand-600 text-white text-sm font-extrabold px-3.5 py-1.5 rounded-xl shadow-sm mb-2">
+                            <span>🕒 16:00</span>
+                        </div>
+                        <h2 class="text-xl sm:text-[22px] font-extrabold text-slate-900 leading-snug">
+                            Фуршет и встреча с преподавателями
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+                            Зайдите на фуршет и пообщайтесь с нужными учителями по предметам (нажмите на карточку, чтобы поставить галочку ✓)
+                        </p>
+                    </div>
+                    <div class="space-y-3 cards-list"></div>
+                `;
+
+                const list1600 = sec1600.querySelector('.cards-list');
+                items1600.forEach(item => {
+                    list1600.appendChild(createCardElement(item));
+                });
+
+                container.appendChild(sec1600);
+            }
+
+            // ============================================================
+            // БЛОК 2: 17:00 — Встреча с куратором группы
+            // ============================================================
+            const all1700 = SCHEDULE_ITEMS.filter(i => i.stage === '17:00');
+            let items1700 = [];
+            let canToggleGroups = false;
+
+            if (state.selectedGroup && !state.showAllCurators && !searchQuery) {
+                const myGroupCard = all1700.find(i => i.group === state.selectedGroup);
+                if (myGroupCard) items1700.push(myGroupCard);
+                canToggleGroups = true;
+            } else {
+                const sorted = [...all1700].sort((a, b) => {
+                    if (a.group === state.selectedGroup) return -1;
+                    if (b.group === state.selectedGroup) return 1;
+                    return 0;
+                });
+                items1700 = sorted.filter(matchesSearch);
+                if (state.selectedGroup && !searchQuery) {
+                    canToggleGroups = true;
+                }
+            }
+
+            if (items1700.length > 0 || canToggleGroups) {
+                renderedCount += items1700.length;
+                const sec1700 = document.createElement('section');
+                sec1700.id = 'stage-1700';
+                sec1700.className = 'scroll-mt-20';
+
+                sec1700.innerHTML = `
+                    <div class="mb-3.5 px-1">
+                        <div class="inline-flex items-center gap-2 bg-slate-900 text-white text-sm font-extrabold px-3.5 py-1.5 rounded-xl shadow-sm mb-2">
+                            <span>🕔 17:00</span>
+                        </div>
+                        <h2 class="text-xl sm:text-[22px] font-extrabold text-slate-900 leading-snug">
+                            Встреча с куратором группы
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+                            Подойдите в кабинет куратора вашей группы
+                        </p>
+                    </div>
+                    <div class="space-y-3 cards-list"></div>
+                `;
+
+                const list1700 = sec1700.querySelector('.cards-list');
+                items1700.forEach(item => {
+                    list1700.appendChild(createCardElement(item));
+                });
+
+                // Кнопка сворачивания/раскрытия остальных 11 групп
+                if (canToggleGroups) {
+                    const toggleBox = document.createElement('div');
+                    toggleBox.className = 'mt-3.5';
+                    toggleBox.innerHTML = `
+                        <button type="button" onclick="toggleShowAllCurators()" class="w-full py-3.5 px-4 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 text-sm font-extrabold text-slate-700 flex items-center justify-center gap-2 transition shadow-sm">
+                            <span>${state.showAllCurators ? 'Скрыть остальные группы' : 'Показать остальные группы (11)'}</span>
+                            <svg class="w-4 h-4 transition-transform ${state.showAllCurators ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                    `;
+                    sec1700.appendChild(toggleBox);
+                }
+
+                container.appendChild(sec1700);
+            }
+
+            // Если поиск не дал результатов
+            if (renderedCount === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-3xl p-8 text-center border border-slate-200 shadow-sm">
+                        <p class="text-base font-extrabold text-slate-900">Ничего не найдено</p>
+                        <p class="text-sm text-slate-500 mt-1 mb-4">Попробуйте другое слово или очистите поиск.</p>
+                        <button type="button" onclick="clearSearch()" class="px-5 py-2.5 rounded-xl bg-brand-600 text-white text-sm font-bold">
+                            Показать всё расписание
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /**
+         * Создание крупной, наглядной карточки для родителей
+         */
+        function createCardElement(item) {
+            const visitedTime = state.visited[item.id];
+            const isChecked = Boolean(visitedTime);
+            const isMyGroup = item.stage === '17:00' && state.selectedGroup && item.group === state.selectedGroup;
+
+            const card = document.createElement('div');
+            card.setAttribute('role', 'checkbox');
+            card.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+            card.tabIndex = 0;
+
+            let cardStyle = 'check-card rounded-3xl p-4 border-2 cursor-pointer select-none flex items-center gap-3.5 shadow-sm ';
+            if (isChecked) {
+                cardStyle += 'bg-emerald-50 border-emerald-500';
+            } else if (item.isBuffet) {
+                cardStyle += 'bg-amber-50/90 border-amber-300';
+            } else if (isMyGroup) {
+                cardStyle += 'bg-brand-50/70 border-brand-500';
+            } else {
+                cardStyle += 'bg-white border-slate-200/90 hover:border-brand-300';
+            }
+
+            card.className = cardStyle;
+            card.onclick = () => toggleItemCheck(item.id);
+            card.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleItemCheck(item.id);
+                }
+            };
+
+            // Левый яркий бейдж номера кабинета и этажа
+            let badgeBg = 'bg-slate-900 text-white';
+            if (isChecked) {
+                badgeBg = 'bg-emerald-600 text-white';
+            } else if (item.isBuffet) {
+                badgeBg = 'bg-amber-500 text-white';
+            } else if (isMyGroup) {
+                badgeBg = 'bg-brand-600 text-white';
+            }
+
+            card.innerHTML = `
+                <!-- Левый яркий бейдж кабинета и этажа -->
+                <div class="shrink-0 w-24 sm:w-28 rounded-2xl py-2.5 px-2 text-center ${badgeBg}">
+                    <div class="text-sm sm:text-base font-extrabold leading-tight">${escapeHTML(item.room)}</div>
+                    <div class="text-[11px] font-bold opacity-90 mt-0.5">${escapeHTML(item.floor)}</div>
+                </div>
+
+                <!-- Центр: крупное название предмета / группы и ФИО -->
+                <div class="flex-1 min-w-0">
+                    ${isMyGroup ? `
+                        <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-brand-600 text-white px-2.5 py-0.5 rounded-lg mb-1">
+                            ВАША ГРУППА
+                        </span>
+                    ` : ''}
+                    ${item.isBuffet ? `
+                        <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-amber-500 text-white px-2.5 py-0.5 rounded-lg mb-1">
+                            ПРИВЕТСТВЕННЫЙ ФУРШЕТ
+                        </span>
+                    ` : ''}
+
+                    <h3 class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">
+                        ${escapeHTML(item.title)}
+                    </h3>
+                    <p class="text-xs sm:text-sm font-medium text-slate-600 mt-0.5 leading-snug">
+                        ${escapeHTML(item.subtitle)}
+                    </p>
+
+                    ${isChecked ? `
+                        <p class="text-xs font-extrabold text-emerald-700 mt-1.5">
+                            ✓ Посещено в ${escapeHTML(visitedTime)}
+                        </p>
+                    ` : ''}
+                </div>
+
+                <!-- Справа большая понятная кнопка-галочка -->
+                <div class="shrink-0">
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center transition-all ${
+                        isChecked
+                            ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
+                            : 'bg-slate-100 border-2 border-slate-300 text-slate-300'
+                    }">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        /**
+         * Формирование текста отчёта
+         */
+        function buildReportText() {
+            const visitedItems = SCHEDULE_ITEMS.filter(item => Boolean(state.visited[item.id]));
+
+            const lines = [
+                '📋 Отчёт родителя — Собрание 20.11.2026',
+                'IT & Business College • Блок C'
+            ];
+
+            if (state.selectedGroup) {
+                lines.push(`Группа: ${state.selectedGroup}`);
+            }
+
+            lines.push('------------------------');
+
+            if (visitedItems.length === 0) {
+                lines.push('Посещённых кабинетов пока нет.');
+            } else {
+                visitedItems.forEach((item, index) => {
+                    const time = state.visited[item.id];
+                    lines.push(`${index + 1}. ✓ [${time}] ${item.room} (${item.floor}) — ${item.title} (${item.subtitle})`);
+                });
+            }
+
+            lines.push('------------------------');
+            lines.push(`Всего посещено: ${visitedItems.length} каб.`);
+
+            return lines.join('\n');
+        }
+
+        /**
+         * Открытие окна отчёта
+         */
+        function openReportModal() {
+            const modal = document.getElementById('report-modal');
+            const body = document.getElementById('report-body');
+            const waLink = document.getElementById('whatsapp-share-link');
+
+            const visitedItems = SCHEDULE_ITEMS.filter(item => Boolean(state.visited[item.id]));
+            const reportText = buildReportText();
+            waLink.href = `https://wa.me/?text=${encodeURIComponent(reportText)}`;
+
+            let html = '';
+
+            if (state.selectedGroup) {
+                html += `
+                    <div class="bg-brand-50 border border-brand-200 rounded-2xl px-4 py-2.5 text-sm font-extrabold text-brand-900">
+                        Выбранная группа: ${escapeHTML(state.selectedGroup)}
+                    </div>
+                `;
+            }
+
+            if (visitedItems.length === 0) {
+                html += `
+                    <div class="text-center py-8 px-4">
+                        <p class="text-base font-extrabold text-slate-800">Пока нет отмеченных кабинетов</p>
+                        <p class="text-sm text-slate-500 mt-1">Нажимайте на карточки кабинетов во время посещения — они появятся здесь с точным временем.</p>
+                    </div>
+                `;
+            } else {
+                html += `<div class="space-y-2">`;
+                visitedItems.forEach((item, idx) => {
+                    const time = state.visited[item.id];
+                    html += `
+                        <div class="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+                            <div class="min-w-0">
+                                <p class="text-xs font-extrabold text-emerald-700">${escapeHTML(item.room)} • ${escapeHTML(item.floor)}</p>
+                                <p class="text-sm font-extrabold text-slate-900">${idx + 1}. ${escapeHTML(item.title)}</p>
+                                <p class="text-xs text-slate-600 truncate">${escapeHTML(item.subtitle)}</p>
+                            </div>
+                            <span class="shrink-0 text-xs font-extrabold text-emerald-800 bg-white border border-emerald-200 px-2.5 py-1.5 rounded-xl">
+                                ${escapeHTML(time)}
+                            </span>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            body.innerHTML = html;
+            modal.classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        /**
+         * Тихое копирование при нажатии на кнопку WhatsApp
+         */
+        function copyReportSilently() {
+            const textToCopy = buildReportText();
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {}
+            document.body.removeChild(textArea);
+        }
+
+        /**
+         * Копирование отчёта в буфер обмена
+         */
+        function copyReportToClipboard() {
+            copyReportSilently();
+            showToast('Текст отчёта скопирован в буфер обмена');
+        }
+
+        /**
+         * Модальное окно сброса галочек
+         */
+        function openResetModal() {
+            document.getElementById('reset-modal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.add('hidden');
+        }
+
+        function confirmResetChecks() {
+            state.visited = {};
+            saveState();
+            closeResetModal();
+            renderAll();
+            showToast('Все галочки сброшены');
+        }
+
+        /**
+         * Всплывающее уведомление
+         */
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+
+            toast.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                toast.classList.remove('-translate-y-4', 'opacity-0');
+            });
+
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('-translate-y-4', 'opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 2500);
+        }
+
+        /**
+         * Безопасное экранирование HTML
+         */
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag));
+        }
+    </script>
+</body>
+</html>
