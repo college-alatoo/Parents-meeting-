@@ -241,10 +241,20 @@
                 id: 'buffet-1600',
                 stage: '16:00',
                 isBuffet: true,
-                title: 'Фуршет и фотозона',
-                subtitle: 'Фуршет и фотозона для родителей в коридоре на 2-м этаже',
+                title: 'Фуршет',
+                subtitle: 'Фуршет для родителей в коридоре на 2-м этаже',
                 room: 'Коридор',
                 floor: '2 этаж',
+                group: null
+            },
+            {
+                id: 'photozone-1600',
+                stage: '16:00',
+                isPhotoZone: true,
+                title: 'Фото студия',
+                subtitle: 'Фото студия для родителей в коридоре на 3-м этаже',
+                room: 'Коридор',
+                floor: '3 этаж',
                 group: null
             },
             {
@@ -696,7 +706,7 @@
                             Фуршет и встреча с преподавателями
                         </h2>
                         <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                            Сначала посетите фуршет и фотозону в коридоре на 2-м этаже. После этого можно пройти к преподавателям в кабинеты, указанные ниже. Нажмите на карточку, чтобы отметить посещение.
+                            Сначала посетите фуршет в коридоре на 2-м этаже. Фото студия расположена в коридоре на 3-м этаже. После этого можно пройти к преподавателям в кабинеты, указанные ниже. Нажмите на карточку, чтобы отметить посещение.
                         </p>
                     </div>
                     <div class="space-y-3 cards-list"></div>
@@ -828,7 +838,7 @@
             let badgeBg = 'bg-slate-900 text-white';
             if (isChecked) {
                 badgeBg = 'bg-emerald-600 text-white';
-            } else if (item.isBuffet) {
+            } else if (item.isBuffet || item.isPhotoZone) {
                 badgeBg = 'bg-amber-500 text-white';
             } else if (isMyGroup) {
                 badgeBg = 'bg-brand-600 text-white';
@@ -850,7 +860,11 @@
                     ` : ''}
                     ${item.isBuffet ? `
                         <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-amber-500 text-white px-2.5 py-0.5 rounded-lg mb-1">
-                            ФУРШЕТ И ФОТОЗОНА
+                            ФУРШЕТ
+                        </span>
+                    ` : item.isPhotoZone ? `
+                        <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-amber-500 text-white px-2.5 py-0.5 rounded-lg mb-1">
+                            ФОТО СТУДИЯ
                         </span>
                     ` : ''}
 
