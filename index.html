@@ -117,7 +117,7 @@
         <nav aria-label="Навигация по времени" class="sticky top-2 z-30 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-md border border-slate-200/90 mb-5 grid grid-cols-2 gap-1.5">
             <a href="#stage-1600" id="nav-1600" class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-brand-600 text-white shadow-sm">
                 <span>🕒 16:00</span>
-                <span class="font-semibold text-xs sm:text-sm opacity-95">Фуршет и учителя</span>
+                <span class="font-semibold text-xs sm:text-sm opacity-95">Фуршет и фотозона</span>
             </a>
             <a href="#stage-1700" id="nav-1700" class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl text-sm sm:text-base font-extrabold text-center transition bg-slate-100 text-slate-800 hover:bg-slate-200">
                 <span>🕔 17:00</span>
@@ -236,13 +236,13 @@
          * Полные данные расписания по двум временным этапам: 16:00 и 17:00
          */
         const SCHEDULE_ITEMS = [
-            // ЭТАП 16:00 — Фуршет и встреча с преподавателями
+            // ЭТАП 16:00 — Фуршет, фотозона и встреча с преподавателями
             {
                 id: 'buffet-1600',
                 stage: '16:00',
                 isBuffet: true,
-                title: 'Фуршет для родителей',
-                subtitle: 'Приветственный фуршет перед началом встреч с преподавателями',
+                title: 'Фуршет и фотозона',
+                subtitle: 'Фуршет и фотозона для родителей',
                 room: 'Блок C',
                 floor: '2 этаж',
                 group: null
@@ -850,7 +850,7 @@
                     ` : ''}
                     ${item.isBuffet ? `
                         <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-amber-500 text-white px-2.5 py-0.5 rounded-lg mb-1">
-                            ПРИВЕТСТВЕННЫЙ ФУРШЕТ
+                            ФУРШЕТ И ФОТОЗОНА
                         </span>
                     ` : ''}
 
